@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Commissions</title></head>
+<body>
+<header>
+    Commissions List
+</header>
+    <ul>
+        {% for item in commission %}
+        <li><a href="/commissions/detail/{{item.id}}">{{item.title}}</a></li>
+        <p>Description: {{item.description}}</p>
+        <p>People Required: {{item.people_required}}</p>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
