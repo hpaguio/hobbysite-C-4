@@ -1,0 +1,12 @@
+{% extends "forum/base.html" %}
+
+{% block title %}Thread - {{ post.title }}{% endblock %}
+
+{% block content %}
+    <h2>{{ post.title }}</h2>
+    {% if post.category %}
+        <p><strong>Category:</strong> {{ post.category.name }}</p>  {# Shows category name, NOT description #}
+    {% endif %}
+    <p>{{ post.entry }}</p>
+    <small>Created on {{ post.created_on }}</small>
+{% endblock %}

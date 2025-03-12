@@ -1,0 +1,14 @@
+{% extends "forum/base.html" %}
+
+{% block title %}Forum Threads{% endblock %}
+
+{% block content %}
+    <h2>Forum Threads</h2>
+    <ul>
+        {% for post in posts %}
+            <li><a href="{% url 'forum:thread-detail' post.pk %}">{{ post.title }}</a></li>
+        {% empty %}
+            <li>No threads yet.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
