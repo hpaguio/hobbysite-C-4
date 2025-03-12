@@ -3,10 +3,14 @@
     <head><title>Commissions</title></head>
 <body>
 <header>
-    Commission Comment details
+    <h1>{{commission.title}}</h1>
 </header>
+
+<p>{{commission.description}}</p>
+
+<h2>Comments:</h2>
     <ul>
-        {% for item in comment %}
+        {% for item in comments %}
         <li>{{item.entry}}</li>
 
         {% endfor %}

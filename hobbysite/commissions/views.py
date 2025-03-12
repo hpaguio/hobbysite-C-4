@@ -7,10 +7,10 @@ from .models import Commission, Comment
 def commission_list(request):
     commissions = Commission.objects.order_by("created_on")
     
-    return render(request, 'commissions_list', {'commission':commissions})
+    return render(request, 'commissions_list.html', {'commission':commissions})
 
 def commission_details(request, param):
     commissions = Commission.objects.get(id=param)
-    comments = Comment.objects.objects.order_by("-created_on")
+    comments = Comment.objects.filter(commission=commissions).order_by("-created_on")
 
     return render(request, 'commissions_detail.html', {'commission':commissions, 'comments':comments})
