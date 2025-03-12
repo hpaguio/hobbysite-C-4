@@ -12,6 +12,7 @@
     <ul>
         {% for item in comments %}
         <li>{{item.entry}}</li>
+		<p>Commented on: {{item.created_on}}         Edited: {{item.updated_on}}<p>
 
         {% endfor %}
     </ul>
