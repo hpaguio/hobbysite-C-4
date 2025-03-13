@@ -5,10 +5,10 @@ from .models import ProductType, Product
  
 # Create your views here.
  
-def list(request):
+def merchstore_list(request):
     product_type = ProductType.objects.order_by("name")
     #return
 
-def detail(request):
+def merchstore_detail(request):
     product = Product.objects.order_by("name")
     #return
