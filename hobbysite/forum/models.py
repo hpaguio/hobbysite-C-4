@@ -12,7 +12,7 @@ class PostCategory(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
-    category = models.ForeignKey(PostCategory, null=True, blank=True, on_delete=models.SET_NULL, related_name='posts')
+    category = models.ForeignKey(PostCategory, null=True, blank=True, on_delete=models.SET_NULL, related_name="posts")
     entry = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)

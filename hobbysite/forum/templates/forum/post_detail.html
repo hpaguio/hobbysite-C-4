@@ -4,9 +4,31 @@
 
 {% block content %}
     <h2>{{ post.title }}</h2>
+
     {% if post.category %}
-        <p><strong>Category:</strong> {{ post.category.name }}</p>  {# Shows category name, NOT description #}
+        <p><strong>Category:</strong> {{ post.category.name }}</p>
     {% endif %}
+
     <p>{{ post.entry }}</p>
-    <small>Created on {{ post.created_on }}</small>
+
+    <p><small>Created on: {{ post.created_on }}</small></p>
+    <p><small>Last updated: {{ post.updated_on }}</small></p>
+
+    <hr>
+    <p>
+        {% if previous_post %}
+            <a href="{% url 'forum:thread-detail' previous_post.pk %}">← Previous Thread</a>
+        {% endif %}
+    
+        {% if previous_post and next_post %}
+            |  <!-- Separator only if both exist -->
+        {% endif %}
+    
+        {% if next_post %}
+            <a href="{% url 'forum:thread-detail' next_post.pk %}">Next Thread →</a>
+        {% endif %}
+    </p>
+    
+    <p><a href="{% url 'forum:thread-list' %}">← Back to Threads</a></p>
+    
 {% endblock %}
