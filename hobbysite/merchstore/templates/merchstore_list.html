@@ -11,7 +11,7 @@
 		</header>
 		<ul>
 			{% for item in product_type %}
-			<li><a href="merchstore/item/{{item.id}}">{{ item.name }}</a></li>
+			<li><a href="/merchstore/item/{{item.id}}">{{ item.name }}</a></li>
 			<p>Description: {{ item.description }}</p>
 			{% endfor %}
 		</ul>
