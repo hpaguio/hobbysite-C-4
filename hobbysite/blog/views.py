@@ -11,6 +11,6 @@ def blog_categories(request):
 
 def blog_article(request, param):
     article_categories = ArticleCategory.objects.get(id=param)
-    articles = Article.objects.filter(article=article_categories).order_by("-created_on")
-
-    return render(request, 'article.html', {'article_category':article_categories, 'article':articles})
+    articles = Article.objects.filter(category=article_categories).order_by("-created_on")
+    
+    return render(request, 'article.html', {'article_category': article_categories, 'article': articles})
