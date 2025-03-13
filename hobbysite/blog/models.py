@@ -1,3 +1,14 @@
 from django.db import models
 
 # Create your models here.
+class ArticleCategory:
+    name = models.CharField(max_length = 255)
+    description = models.TextField()
+
+
+class Article(models.Model):
+    title = models.CharField(max_length = 255)
+    category = models.foreginKey(ArticleCategory, on_delete = models.CASCADE)
+    entry = models.TextField()
+    created_on = models.DateTimeField(auto_now_add = True)
+    updated_on = models.DateTimeField(auto_now = True)
