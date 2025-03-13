@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head><title>{{article_category.name}}</title></head>
+    <body>
+        <header>
+            <h1>{{article_category.name}}</h1>
+        </header>
+        <p>{{article_category.description}}</p>
+        <h2>Articles</h2>
+        <ul>
+            {% for item in article %}
+                <li>{{item.title}}</li>
+                <p>{{item.entry}}</p>
+                <p>Created on: {{item.created_on}} | Updated on: {{item.updated_on}}</p>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
