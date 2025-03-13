@@ -8,10 +8,10 @@ from .models import ProductType, Product
 def merchstore_list(request):
     product_type = ProductType.objects.all()
     
-    return render(request, 'merchstore_list.html', {'product type':product_type})
+    return render(request, 'merchstore_list.html', {'product_type':product_type})
 
 def merchstore_detail(request, param):
 	product_type = ProductType.objects.get(id=param)
     product = Product.objects.filter(product_type=product_type)
 
-    return render(request, 'merchstore_detail.html', {'product type':product_type, 'product':product})
+    return render(request, 'merchstore_detail.html', {'product_type':product_type, 'product':product})

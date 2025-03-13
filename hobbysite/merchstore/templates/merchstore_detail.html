@@ -7,11 +7,15 @@
 
 	<body>
 		<header>
-			Merchandise Store
+			<h1>Merchandise Store</h1>
 		</header>
-		<ul>
+		<h2>{{ product_type.name }}</h2>
+		<p>{{ product_type.description }}</p>
+		<ul>s
 			{% for item in product %}
-			<li>{{ item.name }}</li>
+			<li><b>{{ item.name }}</b></li>
+			<p>Description: {{ item.description }}</p>
+			<p>Price: {{ item.price }}</p>
 			{% endfor %}
 		</ul>
 
