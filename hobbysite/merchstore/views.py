@@ -6,9 +6,12 @@ from .models import ProductType, Product
 # Create your views here.
  
 def merchstore_list(request):
-    product_type = ProductType.objects.order_by("name")
-    #return
+    product_type = ProductType.objects.all()
+    
+    return render(request, 'merchstore_list.html', {'product type':product_type})
 
-def merchstore_detail(request):
-    product = Product.objects.order_by("name")
-    #return
+def merchstore_detail(request, param):
+	product_type = ProductType.objects.get(id=param)
+    product = Product.objects.filter(product_type=product_type)
+
+    return render(request, 'merchstore_detail.html', {'product type':product_type, 'product':product})
