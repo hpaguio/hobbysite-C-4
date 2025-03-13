@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
-    <head><title>Blog</title></head>
-    <body>
-        <header>
-            <h1>Articles List</h1>
-        </header>
-        <ul>
-            {% for item in articles %}
-                <li><a href="/blog/article/{{item.id}}">{{item.title}}</a></li>
-            {% endfor %}
-        </ul>
-    </body>
+<head>
+    <title>Blog</title>
+</head>
+<body>
+<header>
+    <h1>Article Categories</h1>
+</header>
+<ul>
+    {% for category in article_category %}
+        <li>
+            <a href="/blog/article/{{ category.id }}">{{ category.name }}</a>
+            <p>{{ category.description }}</p>
+        </li>
+    {% endfor %}
+</ul>
+</body>
 </html>
