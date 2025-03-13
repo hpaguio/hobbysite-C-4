@@ -1,0 +1,19 @@
+<!DOCTYPE hmtl>
+
+<html>
+	<head>
+		<title>Merchandise Store</title>
+	</head>
+
+	<body>
+		<header>
+			Merchandise Store
+		</header>
+		<ul>
+			{% for item in product %}
+			<li>{{ item.name }}</li>
+			{% endfor %}
+		</ul>
+
+	</body>
+</html>
