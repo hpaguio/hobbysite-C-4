@@ -8,10 +8,10 @@ class ArticleAdmin(admin.ModelAdmin):
     
     list_display = ('title', 'created_on', 'updated_on',)
     
-class CategoriesAdmin(admin.ModelAdmin):
+class ArticleCategoryAdmin(admin.ModelAdmin):
     model = ArticleCategory
     
-    list_display = ('title', 'description',)
+    list_display = ('name', 'description',)
     
 admin.site.register(Article, ArticleAdmin)
-admin.site.register(ArticleCategory, CategoriesAdmin)
+admin.site.register(ArticleCategory, ArticleCategoryAdmin)
