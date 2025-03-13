@@ -12,6 +12,6 @@ def merchstore_list(request):
 
 def merchstore_detail(request, param):
 	product_type = ProductType.objects.get(id=param)
-    product = Product.objects.filter(product_type=product_type)
+	product = Product.objects.filter(product_type=product_type)
 
-    return render(request, 'merchstore_detail.html', {'product_type':product_type, 'product':product})
+	return render(request, 'merchstore_detail.html', {'product_type':product_type, 'product':product})
