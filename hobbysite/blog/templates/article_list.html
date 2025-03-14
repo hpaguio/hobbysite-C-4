@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog</title>
+</head>
+<body>
+<header>
+    <h1>Article Categories</h1>
+</header>
+<ul>
+    {% for category in article_category %}
+        <li>
+            <a href="/blog/article/{{ category.id }}">{{ category.name }}</a>
+            <p>{{ category.description }}</p>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

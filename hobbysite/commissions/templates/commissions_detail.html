@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Commissions</title></head>
+<body>
+<header>
+    <h1>{{commission.title}}</h1>
+</header>
+
+<p>{{commission.description}}</p>
+
+<h2>Comments:</h2>
+    <ul>
+        {% for item in comments %}
+        <li>{{item.entry}}</li>
+		<p>Commented on: {{item.created_on}}         Edited: {{item.updated_on}}<p>
+
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
