@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import ProductType, Product
  
-# Create your views here.
  
 def merchstore_list(request):
     product_type = ProductType.objects.all()
