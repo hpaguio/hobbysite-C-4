@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Login</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    
+    {% if form.non_field_errors %}
+      <div style="color: red;">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <div>
+      <label for="{{ form.username.id_for_label }}">Username:</label>
+      {{ form.username }}
+    </div>
+
+    <div>
+      <label for="{{ form.password.id_for_label }}">Password:</label>
+      {{ form.password }}
+    </div>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <p>Don’t have an account yet? <a href="{% url 'user_management:register' %}">Register here</a></p>
+  <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+{% endblock %}

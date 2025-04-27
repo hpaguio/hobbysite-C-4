@@ -1,21 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HobbySite Home</title>
-</head>
-<body>
-    <h1>Welcome to HobbySite!</h1>
-    <p>This is the homepage that my groupmates will use.</p>
+{% extends "base.html" %}
 
-    <h2>Navigation</h2>
-    <ul>
-        <li><a href="/forum/">Go to Forum</a></li>
-        <li><a href="/commissions/">Go to Commissions</a></li>
-        <li><a href="/blog/">Go to Blog</a></li>
-        <li><a href="/wiki/">Go to Wiki</a></li>
-        <li><a href="/merchstore/">Go to Merchandise Store</a></li>
-    </ul>
-</body>
-</html>
+{% block title %}Home - HobbySite{% endblock %}
+
+{% block content %}
+  <h2>Welcome to HobbySite!</h2>
+  <p>This is the homepage for everyone to explore all sections easily.</p>
+
+  <h3>Explore:</h3>
+  <ul>
+    <li><a href="{% url 'forum:thread-list' %}">Forum</a></li>
+    <li><a href="/commissions/">Commissions</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/wiki/">Wiki</a></li>
+    <li><a href="/merchstore/">Merchandise Store</a></li>
+  </ul>
+{% endblock %}
