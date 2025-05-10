@@ -1,10 +1,14 @@
 from django.urls import path
-from .views import commission_list, commission_details
-
-app_name = "commissions"
+from . import views
+from .views import commission_list, commission_details, commission_create, commission_update, commission_jobview, commission_jobapply
 
 urlpatterns = [
-    path("", commission_list, name="commission_home"),
-    path("list/", commission_list, name="commission_list"),
-    path("detail/<int:param>/", commission_details, name="commission_details"),
-]
+    path('list/', commission_list, name="commission_list"),
+    path('detail/<int:param>/', commission_details, name="commission_details"),
+    path('add/', commission_create, name="commission_create"),
+    path('<int:param>/edit/', commission_update, name="commission_update"),
+    path('job/<int:job_id>/', commission_jobview, name="commission_jobview"),
+    path('job/<int:job_id>/apply/', commission_jobapply, name='commission_jobapply'),
+    ]
+
+app_name = "commissions"
