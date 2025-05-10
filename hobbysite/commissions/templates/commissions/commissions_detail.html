@@ -42,8 +42,10 @@
                 {% else %}
                     <p>No open slots available for this job.</p>
                 {% endif %}
-
-                <a href="{% url 'commissions:commission_jobview' info.job.id %}">View Applicants</a>
+				
+				{% if is_owner %}
+					<a href="{% url 'commissions:commission_jobview' info.job.id %}">View Applicants</a>
+				{% endif %}
 
             </div>
         {% endfor %}
