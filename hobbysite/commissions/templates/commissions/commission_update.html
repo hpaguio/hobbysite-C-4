@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Update Commission
+{% endblock %}
+
+{% block content %}
+	<h2>Update Commission: {{ commission.title }}</h2>
+    <h3>Edit Commission Details</h3>
+	<form method="POST">
+    {% csrf_token %}
+
+    <div>
+        <h4>Commission Information</h4>
+        {{ commission_form.as_p }}
+        <button type="submit" name="update_commission" formnovalidate>Update Commission</button>
+    </div>
+
+    <hr>
+
+    <div>
+        <h4>Add New Job</h4>
+        {{ job_form.as_p }}
+        <button type="submit" name="add_job" formnovalidate>Add Job</button>
+    </div>
+	</form>
+
+	<br>
+	<a href="{% url 'commissions:commission_details' commission.id %}">Back to Commission Details</a>
+{% endblock %}
