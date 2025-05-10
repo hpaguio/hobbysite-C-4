@@ -139,3 +139,51 @@ def commission_update(request, param):
         'job_form': job_form,
         'commission': commission,
     })
+
+@login_required
+def commission_jobview(request, job_id):
+    try:
+        job = Job.objects.get(id=job_id)
+    except Job.DoesNotExist:
+        raise Http404("Job not found")  
+
+    if request.user != job.commission.created_by:
+        return HttpResponseRedirect(reverse('commissions:commission_details', args=[job.commission.id]))
+    
+    if request.method == 'POST':
+        application_id = request.POST.get('application_id')
+        action = request.POST.get('action')
+
+        try:
+            application = JobApplication.objects.get(id=application_id)
+        except JobApplication.DoesNotExist:
+            raise Http404("Job application not found")
+
+        if action == 'accept':
+            application.status = 'Accepted'
+        elif action == 'reject':
+            application.status = 'Rejected'
+        application.save()
+
+        return redirect('commissions:commission_jobview', job_id=job.id)
+    
+    job_applications = JobApplication.objects.filter(job=job).order_by('status', '-applied_on')
+
+    return render(request, 'commissions/commission_jobview.html', {
+        'job': job,
+        'job_applications': job_applications
+    })
+
+@login_required
+def commission_jobapply(request, job_id):
+    if request.method == 'POST':
+        job = Job.objects.get(id=job_id)
+        profile = Profile.objects.get(user=request.user)
+
+        if not JobApplication.objects.filter(job=job, applicant=profile).exists():
+            JobApplication.objects.create(
+                job=job,
+                applicant=profile
+            )
+        
+        return redirect('commissions:commission_details', param=job.commission.id)
