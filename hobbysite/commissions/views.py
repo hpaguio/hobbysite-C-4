@@ -91,3 +91,51 @@ def commission_details(request, param):
         'is_owner': is_owner,
         'creator_name': creator_name,
     })
+
+@login_required
+def commission_create(request):
+    if request.method == 'POST':
+        form = CommissionForm(request.POST)
+        if form.is_valid():
+            commission = form.save(commit=False)
+            commission.created_by = request.user
+            commission.save()
+            return redirect('commissions:commission_list')
+    else:
+        form = CommissionForm()
+    
+    return render(request, 'commissions/commission_create.html', {'form':form})
+
+@login_required
+def commission_update(request, param):
+    commission = Commission.objects.get(id=param)
+
+    if commission.created_by != request.user:
+        return HttpResponse("You are not allowed to edit this commission.", status=403)
+
+    commission_form = CommissionForm(request.POST or None, instance=commission)
+    job_form = JobForm(request.POST or None)
+
+    if request.method == 'POST':
+        if 'update_commission' in request.POST and commission_form.is_valid():
+            commission_form.save()
+
+            jobs = commission.jobs.all()
+            if all(job.status == 'Full' for job in jobs):
+                commission.status = 'Full'
+                commission.save()
+
+            return redirect('commissions:commission_details', param=commission.id)
+
+        elif 'add_job' in request.POST and job_form.is_valid():
+            new_job = job_form.save(commit=False)
+            new_job.commission = commission
+            new_job.save()
+
+            return redirect('commissions:commission_details', param=commission.id)
+
+    return render(request, 'commissions/commission_update.html', {
+        'commission_form': commission_form,
+        'job_form': job_form,
+        'commission': commission,
+    })
