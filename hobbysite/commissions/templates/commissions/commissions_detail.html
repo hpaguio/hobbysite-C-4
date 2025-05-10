@@ -1,21 +1,58 @@
-<!DOCTYPE html>
-<html>
-    <head><title>Commissions</title></head>
-<body>
-<header>
-    <h1>{{commission.title}}</h1>
-</header>
+{% extends "base.html" %}
 
-<p>{{commission.description}}</p>
+{% block title %}
+    {{ commission.title }}
+{% endblock %}
 
-<h2>Comments:</h2>
-    <ul>
-        {% for item in comments %}
-        <li>{{item.entry}}</li>
-		<p>Commented on: {{item.created_on}}         Edited: {{item.updated_on}}<p>
+{% block content %}
+	<h2>{{ commission.title }}</h2>
+    <div>
+        <h3>Description</h3>
+        <p>{{ commission.description }}</p>
+        <h3>Created by: {{ creator_name }}</h3>
+    </div>
 
+    <div>
+        <h3>Status: {{ commission.status }}</h3>
+        <p>Created on: {{ commission.created_on }}</p>
+        <p>Last updated: {{ commission.updated_on }}</p>
+    </div>
+
+    <div>
+        <h3>Total Manpower Required: {{ total_manpower }}</h3>
+        <h3>Total Slots Open: {{ total_slots_open }}</h3>
+    </div>
+
+    <div>
+        <h3>Jobs</h3>
+        {% for info in job_info %}
+            <div class="job-info">
+                <h4>{{ info.job.role }}</h4>
+                <p>Manpower Required: {{ info.job.manpower_required }}</p>
+                <p>Accepted Applicants: {{ info.accepted }}</p>
+                <p>Open Slots: {{ info.slots_open }}</p>
+                
+                {% if info.can_apply %}
+                    <form method="post" action="{% url 'commissions:commission_jobapply' info.job.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Apply for this Job</button>
+                    </form>
+                {% elif info.user_applied %}
+                    <p>You have already applied for this job.</p>
+                {% else %}
+                    <p>No open slots available for this job.</p>
+                {% endif %}
+
+                <a href="{% url 'commissions:commission_jobview' info.job.id %}">View Applicants</a>
+
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 
-</body>
-</html>
+    {% if is_owner %}
+        <div>
+            <a href="{% url 'commissions:commission_update' commission.id %}">Edit Commission</a>
+        </div>
+    {% endif %}
+
+{% endblock %}
