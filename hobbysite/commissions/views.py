@@ -56,8 +56,38 @@ def commission_list(request):
         'applied_commissions':applied_commissions
     })
 
+@login_required
 def commission_details(request, param):
-    commissions = Commission.objects.get(id=param)
-    comments = Comment.objects.filter(commission=commissions).order_by("-created_on")
+    commission = Commission.objects.get(id=param)
+    jobs = Job.objects.filter(commission=commission)
 
-    return render(request, 'commissions_detail.html', {'commission':commissions, 'comments':comments})
+    total_manpower = sum(job.manpower_required for job in jobs)
+
+    job_info = []
+    for job in jobs:
+        accepted = JobApplication.objects.filter(job=job, status='Accepted').count()
+        slots_open = max(0, job.manpower_required - accepted)
+        user_applied = JobApplication.objects.filter(job=job, applicant__user=request.user).exists()
+        
+        can_apply = slots_open > 0 and not user_applied
+
+        job_info.append({
+            'job': job,
+            'accepted': accepted,
+            'slots_open': slots_open,
+            'can_apply': can_apply,
+            'user_applied': user_applied
+        })
+    
+    total_slots_open = sum(info['slots_open'] for info in job_info)
+    is_owner = commission.created_by == request.user
+    creator_name = commission.created_by.profile.user
+
+    return render(request, 'commissions/commissions_detail.html', {
+        'commission': commission,
+        'job_info': job_info,
+        'total_manpower': total_manpower,
+        'total_slots_open': total_slots_open,
+        'is_owner': is_owner,
+        'creator_name': creator_name,
+    })
