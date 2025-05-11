@@ -1,10 +1,10 @@
 from django import forms
-from .models import Thread, Comment
+from .models import Article, Comment
 
 
-class ThreadForm(forms.ModelForm):
+class ArticleForm(forms.ModelForm):
     class Meta:
-        model = Thread
+        model = Article
         fields = ['title', 'category', 'entry', 'image']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -13,7 +13,7 @@ class ThreadForm(forms.ModelForm):
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
         help_texts = {
-            'image': 'Optional: Upload an image related to the thread.',
+            'image': 'Optional: Upload an image related to the article.',
         }
 
 
