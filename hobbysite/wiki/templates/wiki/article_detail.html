@@ -1,42 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}Thread - {{ post.title }}{% endblock %}
+{% block title %}Article - {{ article.title }}{% endblock %}
 
 {% block content %}
-  <h2>{{ post.title }}</h2>
+  <h2>{{ article.title }}</h2>
 
-  {% if post.category %}
-    <p><strong>Category:</strong> {{ post.category.name }}</p>
+  {% if article.category %}
+    <p><strong>Category:</strong> {{ <article></article>.category.name }}</p>
   {% endif %}
 
-  <p>{{ post.entry }}</p>
+  <p>{{ article.entry }}</p>
 
-  {% if post.image %}
+  {% if article.image %}
     <div>
-      <img src="{{ post.image.url }}" alt="Thread image" style="max-width: 100%; height: auto;">
+      <img src="{{ article.image.url }}" alt="Article image" style="max-width: 100%; height: auto;">
     </div>
   {% endif %}
 
-  <p><small>🕒 Created: {{ post.created_on|date:"F d, Y H:i" }}</small></p>
-  <p><small>🔁 Updated: {{ post.updated_on|date:"F d, Y H:i" }}</small></p>
+  <p><small>🕒 Created: {{ article.created_on|date:"F d, Y H:i" }}</small></p>
+  <p><small>🔁 Updated: {{ article.updated_on|date:"F d, Y H:i" }}</small></p>
 
-  {% if user == post.author.user %}
-    <p><a href="{% url 'wiki:thread-edit' post.pk %}">Edit Thread</a></p>
+  {% if user == article.author.user %}
+    <p><a href="{% url 'wiki:article-edit' article.pk %}">Edit Article</a></p>
   {% endif %}
 
   <hr>
 
-  <div class="thread-navigation">
-    {% if previous_post %}
-      <a href="{% url 'wiki:thread-detail' previous_post.pk %}">← Previous Thread</a>
+  <div class="article-navigation">
+    {% if previous_article %}
+      <a href="{% url 'wiki:article-detail' previous_article.pk %}">← Previous Article</a>
     {% endif %}
-    {% if previous_post and next_post %} | {% endif %}
-    {% if next_post %}
-      <a href="{% url 'wiki:thread-detail' next_post.pk %}">Next Thread →</a>
+    {% if previous_article and next_article %} | {% endif %}
+    {% if next_article %}
+      <a href="{% url 'wiki:article-detail' next_article.pk %}">Next Article →</a>
     {% endif %}
   </div>
 
-  <p><a href="{% url 'wiki:thread-list' %}">← Back to Threads</a></p>
+  <p><a href="{% url 'wiki:article-list' %}">← Back to Articles</a></p>
 
   <hr>
 

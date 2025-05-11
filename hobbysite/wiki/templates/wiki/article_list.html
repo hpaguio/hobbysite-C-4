@@ -28,16 +28,16 @@
     </ul>
 
     <div class="pagination">
-      {% if posts.has_previous %}
+      {% if articles.has_previous %}
         <a href="?page=1">First</a>
-        <a href="?page={{ posts.previous_page_number }}">Previous</a>
+        <a href="?page={{ articles.previous_page_number }}">Previous</a>
       {% endif %}
 
-      <span>Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
+      <span>Page {{ articles.number }} of {{ articles.paginator.num_pages }}</span>
 
-      {% if posts.has_next %}
-        <a href="?page={{ posts.next_page_number }}">Next</a>
-        <a href="?page={{ posts.paginator.num_pages }}">Last</a>
+      {% if articles.has_next %}
+        <a href="?page={{ articles.next_page_number }}">Next</a>
+        <a href="?page={{ articles.paginator.num_pages }}">Last</a>
       {% endif %}
     </div>
 
