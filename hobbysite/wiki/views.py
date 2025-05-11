@@ -45,7 +45,7 @@ class ArticleDetailView(DetailView):
         context['comment_form'] = CommentForm()
         return context
 
-    def article(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         """
         Handles comment form submission directly on the Article detail page.
         """
@@ -59,9 +59,9 @@ class ArticleDetailView(DetailView):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = profile
-            comment.Article = self.object
+            comment.article = self.object
             comment.save()
-            return redirect("wiki:Article-detail", pk=self.object.pk)
+            return redirect("wiki:article-detail", pk=self.object.pk)
 
         # Re-render with errors
         context = self.get_context_data()
