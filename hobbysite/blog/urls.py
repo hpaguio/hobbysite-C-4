@@ -1,10 +1,19 @@
 from django.urls import path
-from .views import blog_categories, blog_article
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from .views import (
+    ArticleListView,
+    ArticleDetailView,
+    ArticleCreateView,
+    ArticleUpdateView,
+)
 
 app_name = "blog"
 
 urlpatterns = [
-    path("", blog_categories, name="blog_home"),
-    path("articles/", blog_categories, name="blog_categories"),
-    path("article/<int:param>/", blog_article, name="blog_article"),
+    path("", lambda request: HttpResponseRedirect(reverse_lazy("blog:article-list"))),
+    path("articles/", ArticleListView.as_view(), name="article-list"),
+    path("article/add/", ArticleCreateView.as_view(), name="article-create"),
+    path("article/<int:pk>/", ArticleDetailView.as_view(), name="article-detail"),
+    path("article/<int:pk>/edit/", ArticleUpdateView.as_view(), name="article-edit"),
 ]
