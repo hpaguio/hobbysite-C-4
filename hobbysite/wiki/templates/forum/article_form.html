@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block title %}
-  {% if form.instance.pk %}Edit Thread{% else %}Create Thread{% endif %}
+  {% if form.instance.pk %}Edit Article{% else %}Create Article{% endif %}
 {% endblock %}
 
 {% block content %}
-  <h2>{% if form.instance.pk %}Edit Thread{% else %}Create New Thread{% endif %}</h2>
+  <h2>{% if form.instance.pk %}Edit Article{% else %}Create New Article{% endif %}</h2>
 
-  <form method="post" enctype="multipart/form-data" class="thread-form">
+  <form method="post" enctype="multipart/form-data" class="article-form">
     {% csrf_token %}
     {{ form.non_field_errors }}
 
@@ -23,9 +23,9 @@
     {% endfor %}
 
     <button type="submit" class="btn btn-primary">
-      {% if form.instance.pk %}Update{% else %}Create{% endif %} Thread
+      {% if form.instance.pk %}Update{% else %}Create{% endif %} Article
     </button>
   </form>
 
-  <p><a href="{% url 'forum:thread-list' %}">← Back to Threads</a></p>
+  <p><a href="{% url 'wiki:article-list' %}">← Back to Articles</a></p>
 {% endblock %}

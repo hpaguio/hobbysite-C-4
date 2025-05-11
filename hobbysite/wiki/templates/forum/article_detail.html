@@ -21,22 +21,22 @@
   <p><small>🔁 Updated: {{ post.updated_on|date:"F d, Y H:i" }}</small></p>
 
   {% if user == post.author.user %}
-    <p><a href="{% url 'forum:thread-edit' post.pk %}">Edit Thread</a></p>
+    <p><a href="{% url 'wiki:thread-edit' post.pk %}">Edit Thread</a></p>
   {% endif %}
 
   <hr>
 
   <div class="thread-navigation">
     {% if previous_post %}
-      <a href="{% url 'forum:thread-detail' previous_post.pk %}">← Previous Thread</a>
+      <a href="{% url 'wiki:thread-detail' previous_post.pk %}">← Previous Thread</a>
     {% endif %}
     {% if previous_post and next_post %} | {% endif %}
     {% if next_post %}
-      <a href="{% url 'forum:thread-detail' next_post.pk %}">Next Thread →</a>
+      <a href="{% url 'wiki:thread-detail' next_post.pk %}">Next Thread →</a>
     {% endif %}
   </div>
 
-  <p><a href="{% url 'forum:thread-list' %}">← Back to Threads</a></p>
+  <p><a href="{% url 'wiki:thread-list' %}">← Back to Threads</a></p>
 
   <hr>
 

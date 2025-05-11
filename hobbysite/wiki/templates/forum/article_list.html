@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}Forum Threads{% endblock %}
+{% block title %}Wiki Articles{% endblock %}
 
 {% block content %}
-  <h2>Forum Threads</h2>
+  <h2>Wiki Articles</h2>
 
   {% if user.is_authenticated %}
-    <p><a href="{% url 'forum:thread-create' %}" class="btn btn-primary">Create New Thread</a></p>
+    <p><a href="{% url 'wiki:article-create' %}" class="btn btn-primary">Create New Article</a></p>
   {% endif %}
 
-  {% if posts %}
-    <ul class="thread-list">
-      {% for post in posts %}
-        <li class="thread-item">
+  {% if articles %}
+    <ul class="article-list">
+      {% for article in articles %}
+        <li class="article-item">
           <h3>
-            <a href="{% url 'forum:thread-detail' post.pk %}">
-              {{ post.title }}
+            <a href="{% url 'wiki:article-detail' article.pk %}">
+              {{ article.title }}
             </a>
           </h3>
-          {% if post.category %}
-            <small>{{ post.category.name }}</small><br>
+          {% if article.category %}
+            <small>{{ article.category.name }}</small><br>
           {% endif %}
-          <small>🕒 {{ post.created_on|date:"M d, Y H:i" }}</small>
-          <p>{{ post.entry|truncatechars:100 }}</p>
+          <small>🕒 {{ article.created_on|date:"M d, Y H:i" }}</small>
+          <p>{{ article.entry|truncatechars:100 }}</p>
         </li>
       {% endfor %}
     </ul>
