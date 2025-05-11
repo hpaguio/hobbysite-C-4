@@ -2,18 +2,18 @@ from django.urls import path
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from .views import (
-    ThreadListView,
-    ThreadDetailView,
-    ThreadCreateView,
-    ThreadUpdateView,
+    ArticleListView,
+    ArticleDetailView,
+    ArticleCreateView,
+    ArticleUpdateView,
 )
 
-app_name = "forum"
+app_name = "wiki"
 
 urlpatterns = [
-    path("", lambda request: HttpResponseRedirect(reverse_lazy("forum:thread-list"))),
-    path("threads/", ThreadListView.as_view(), name="thread-list"),
-    path("thread/add/", ThreadCreateView.as_view(), name="thread-create"),
-    path("thread/<int:pk>/", ThreadDetailView.as_view(), name="thread-detail"),
-    path("thread/<int:pk>/edit/", ThreadUpdateView.as_view(), name="thread-edit"),
+    path("", lambda request: HttpResponseRedirect(reverse_lazy("wiki:article-list"))),
+    path("articles/", ArticleListView.as_view(), name="article-list"),
+    path("article/add/", ArticleCreateView.as_view(), name="article-create"),
+    path("article/<int:pk>/", ArticleDetailView.as_view(), name="article-detail"),
+    path("article/<int:pk>/edit/", ArticleUpdateView.as_view(), name="article-edit"),
 ]
