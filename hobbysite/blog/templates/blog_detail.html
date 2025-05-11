@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - Blog{% endblock %}
+
+{% block content %}
+  <h2>{{ article.title }}</h2>
+  
+  <p>{{ article.entry }}</p>
+
+  {% if article.image %}
+    <div>
+      <img src="{{ article.image.url }}" alt="Blog image" style="max-width: 100%; height: auto;">
+    </div>
+  {% endif %}
+
+  <p><small>🕒 Created: {{ article.created_on|date:"F d, Y H:i" }}</small></p>
+  <p><small>🔁 Updated: {{ article.updated_on|date:"F d, Y H:i" }}</small></p>
+
+  {% if user == article.author.user %}
+    <p><a href="{% url 'blog:article-edit' article.pk %}">Edit Article</a></p>
+  {% endif %}
+
+  <hr>
+
+  <p><a href="{% url 'blog:article-list' %}">← Back to Articles</a></p>
+
+  <hr>
+
+  <h3>💬 Comments</h3>
+
+  {% if comments %}
+    <ul>
+      {% for comment in comments %}
+        <li>
+          <strong>{{ comment.author.display_name }}</strong>
+          <small>on {{ comment.created_on|date:"M d, Y H:i" }}</small>
+          <p>{{ comment.entry }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No comments yet. Be the first to share your thoughts!</p>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    <hr>
+    <h4>Add a Comment</h4>
+    <form method="post">
+      {% csrf_token %}
+      {% if comment_form.errors %}
+        <div style="color: red;">
+          Please fix the errors below.
+        </div>
+      {% endif %}
+      <div>
+        {{ comment_form.entry.label_tag }}
+        {{ comment_form.entry }}
+        {% if comment_form.entry.errors %}
+          <div style="color: red;">{{ comment_form.entry.errors }}</div>
+        {% endif %}
+      </div>
+      <button type="submit">Post Comment</button>
+    </form>
+  {% else %}
+    <p><a href="{% url 'login' %}">Login</a> to add a comment.</p>
+  {% endif %}
+{% endblock %}

@@ -1,19 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Blog</title>
-</head>
-<body>
-<header>
-    <h1>Article Categories</h1>
-</header>
-<ul>
-    {% for category in article_category %}
-        <li>
-            <a href="/blog/article/{{ category.id }}">{{ category.name }}</a>
-            <p>{{ category.description }}</p>
+{% extends "base.html" %}
+
+{% block title %}Blog Articles{% endblock %}
+
+{% block content %}
+  <h2>Blog Articles</h2>
+
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'blog:article-create' %}" class="btn btn-primary">Create New Article</a></p>
+  {% endif %}
+
+  {% if articles %}
+    <ul class="thread-list">
+      {% for article in articles %}
+        <li class="thread-item">
+          <h3><a href="{% url 'blog:article-detail' article.pk %}">{{ article.title }}</a></h3>
+          <small>🕒 {{ article.created_on|date:"M d, Y H:i" }}</small>
+
+          {% if article.image %}
+            <div>
+              <img src="{{ article.image.url }}" alt="{{ article.title }}" style="max-width: 200px; height: auto;">
+            </div>
+          {% endif %}
+
+          {% if article.category %}
+            <p><strong>Category:</strong> {{ article.category.name }}</p>
+          {% endif %}
+
+          <p>{{ article.entry|truncatechars:100 }}</p>
         </li>
-    {% endfor %}
-</ul>
-</body>
-</html>
+      {% endfor %}
+    </ul>
+
+    <div class="pagination">
+      {% if articles.has_previous %}
+          <a href="?page=1">First</a>
+          <a href="?page={{ articles.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      <span>Page {{ articles.number }} of {{ articles.paginator.num_pages }}</span>
+
+      {% if articles.has_next %}
+          <a href="?page={{ articles.next_page_number }}">Next</a>
+          <a href="?page={{ articles.paginator.num_pages }}">Last</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <p>No articles yet. Be the first to write one!</p>
+  {% endif %}
+{% endblock %}
