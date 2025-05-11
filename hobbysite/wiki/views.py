@@ -3,51 +3,51 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.shortcuts import get_object_or_404, redirect
-from .models import Thread, Comment
+from .models import Article, Comment
 from .forms import CommentForm
 from user_management.models import Profile
 
 
-class ThreadListView(ListView):
-    model = Thread
-    template_name = 'forum/post_list.html'
-    context_object_name = 'posts'
+class ArticleListView(ListView):
+    model = Article
+    template_name = 'wiki/article_list.html'
+    context_object_name = 'articles'
     paginate_by = 5
 
     def get_queryset(self):
-        return Thread.objects.select_related('category', 'author').all()
+        return Article.objects.select_related('category', 'author').all()
 
 
-class ThreadDetailView(DetailView):
-    model = Thread
-    template_name = 'forum/post_detail.html'
-    context_object_name = 'post'
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'wiki/article_detail.html'
+    context_object_name = 'article'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        post = self.get_object()
+        article = self.get_object()
 
-        context['previous_post'] = (
-            Thread.objects.filter(created_on__lt=post.created_on)
+        context['previous_article'] = (
+            Article.objects.filter(created_on__lt=article.created_on)
             .order_by('-created_on')
             .select_related('category')
             .first()
         )
-        context['next_post'] = (
-            Thread.objects.filter(created_on__gt=post.created_on)
+        context['next_article'] = (
+            Article.objects.filter(created_on__gt=article.created_on)
             .order_by('created_on')
             .select_related('category')
             .first()
         )
 
         # Comments
-        context['comments'] = post.comments.select_related('author').order_by('created_on')
+        context['comments'] = article.comments.select_related('author').order_by('created_on')
         context['comment_form'] = CommentForm()
         return context
 
-    def post(self, request, *args, **kwargs):
+    def article(self, request, *args, **kwargs):
         """
-        Handles comment form submission directly on the thread detail page.
+        Handles comment form submission directly on the Article detail page.
         """
         if not request.user.is_authenticated:
             return redirect("login")
@@ -59,9 +59,9 @@ class ThreadDetailView(DetailView):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = profile
-            comment.thread = self.object
+            comment.Article = self.object
             comment.save()
-            return redirect("forum:thread-detail", pk=self.object.pk)
+            return redirect("wiki:Article-detail", pk=self.object.pk)
 
         # Re-render with errors
         context = self.get_context_data()
@@ -69,9 +69,9 @@ class ThreadDetailView(DetailView):
         return self.render_to_response(context)
 
 
-class ThreadCreateView(LoginRequiredMixin, CreateView):
-    model = Thread
-    template_name = 'forum/thread_form.html'
+class ArticleCreateView(LoginRequiredMixin, CreateView):
+    model = Article
+    template_name = 'wiki/article_form.html'
     fields = ['title', 'category', 'entry', 'image']
 
     def form_valid(self, form):
@@ -79,11 +79,11 @@ class ThreadCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ThreadUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Thread
-    template_name = 'forum/thread_form.html'
+class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Article
+    template_name = 'wiki/article_form.html'
     fields = ['title', 'category', 'entry', 'image']
 
     def test_func(self):
-        thread = self.get_object()
-        return thread.author.user == self.request.user
+        Article = self.get_object()
+        return Article.author.user == self.request.user
