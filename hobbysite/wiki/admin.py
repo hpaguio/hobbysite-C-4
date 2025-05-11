@@ -18,9 +18,9 @@ class ArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('entry_preview', 'author', 'thread', 'created_on')
+    list_display = ('entry_preview', 'author', 'article', 'created_on')
     list_filter = ('created_on',)
-    search_fields = ('entry', 'author__display_name', 'thread__title')
+    search_fields = ('entry', 'author__display_name', 'article__title')
     ordering = ('-created_on',)
 
     def entry_preview(self, obj):
