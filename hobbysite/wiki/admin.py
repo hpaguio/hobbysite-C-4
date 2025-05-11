@@ -1,14 +1,14 @@
 from django.contrib import admin
-from .models import ThreadCategory, Thread, Comment
+from .models import ArticleCategory, Article, Comment
 
-@admin.register(ThreadCategory)
-class ThreadCategoryAdmin(admin.ModelAdmin):
+@admin.register(ArticleCategory)
+class ArticleCategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
 
 
-@admin.register(Thread)
-class ThreadAdmin(admin.ModelAdmin):
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'author', 'created_on', 'updated_on')
     list_filter = ('category', 'created_on', 'updated_on')
     search_fields = ('title', 'entry', 'author__display_name')
