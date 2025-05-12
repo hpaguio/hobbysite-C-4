@@ -172,3 +172,4 @@ cython_debug/
 /hobbysite/forum/migrations
 /hobbysite/media/thread_images
 /hobbysite/user_management/migrations
+*.py
