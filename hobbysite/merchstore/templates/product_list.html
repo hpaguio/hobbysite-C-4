@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+Merchstore
+{% endblock %}
+
+{% block content %}
+<h2>Product List</h2>
+
+{% if user.is_authenticated %}
+
+{% if products %}
+	<h3>Your Products</h3>
+	<ul class="product-list">
+		{% for product in products %}
+			{% if user == product.owner.user %}
+				<li class="product-item">
+					<h4>
+						<a href="{% url 'merchstore:product-detail' product.pk %}">
+							{{ product.name }}
+						</a>
+					</h4>
+					<p><b>{{ product.product_type.name }}</b></p>
+					<p>Owner: {{ product.owner }}</p>
+					<p>Description: {{ product.description }}</p>
+					<p>Price: {{ product.price }}</p>
+					<p>Stock: {{ product.stock }}</p>
+					<p>Status: {{ product.status }}</p>
+				</li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	<h3>Other Users' Products</h3>
+	<ul class="product-list">
+		{% for product in products %}
+			{% if user != product.owner.user %}
+				<li class="product-item">
+					<h4>
+						<a href="{% url 'merchstore:product-detail' product.pk %}">
+							{{ product.name }}
+						</a>
+					</h4>
+					<p><b>{{ product.product_type }}</b></p>
+					<p>Owner: {{ product.owner }}</p>
+					<p>Description: {{ product.description }}</p>
+					<p>Price: {{ product.price }}</p>
+					<p>Stock: {{ product.stock }}</p>
+					<p>Status: {{ product.status }}</p>
+				</li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+{% else %}
+	<p>No products yet. Be the first to place a product in the market!</p>
+{% endif %}
+
+<p><a href="{% url 'merchstore:product-create' %}">Place a Product</a></p>
+
+{% else %}
+
+{% if products %}
+	<ul class="product-list">
+		{% for product in products %}
+			<li class="product-item">
+				<h4>
+					<a href="{% url 'merchstore:product-detail' product.pk %}">
+						{{ product.name }}
+					</a>
+				</h4>
+				<p><b>{{ product.product_type }}</b></p>
+				<p>Owner: {{ product.owner }}</p>
+				<p>Description: {{ product.description }}</p>
+				<p>Price: {{ product.price }}</p>
+				<p>Stock: {{ product.stock }}</p>
+				<p>Status: {{ product.status }}</p>
+			</li>
+		{% endfor %}
+	</ul>
+{% else %}
+	<p>No products yet. Be the first to place a product in the market!</p>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+	{% if form.instance.pk %}
+		Edit Product
+	{% else %}
+		New Product
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+	<h2>
+		{% if form.instance.pk %}
+			Edit Product
+		{% else %}
+			New Product
+		{% endif %}
+	</h2>
+
+	<form method="post" enctype="multipart/form_date" class="thread-form">
+		{% csrf_token %}
+		{{ form.non_field_errors }}
+
+		{% for field in form %}
+			<div class="form-group">
+				{{ field.label_tag }}
+				{{ field }}
+				{{ field.errors }}
+			</div>
+		{% endfor %}
+
+		<button type="submit" class="btn btn-primary">
+			Submit
+		</button>
+	</form>
+
+	<p><a href="{% url 'merchstore:product-list' %}">Back to Product list</a><p>
+{% endblock %}
