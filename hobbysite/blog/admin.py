@@ -1,16 +1,28 @@
 from django.contrib import admin
-from .models import Article, ArticleCategory
+from .models import ArticleCategory, Article, Comment
 
-
-class ArticleAdmin(admin.ModelAdmin):
-    model = Article
-    
-    list_display = ('title', 'created_on', 'updated_on',)
-    
+@admin.register(ArticleCategory)
 class ArticleCategoryAdmin(admin.ModelAdmin):
-    model = ArticleCategory
-    
-    list_display = ('name', 'description',)
-    
-admin.site.register(Article, ArticleAdmin)
-admin.site.register(ArticleCategory, ArticleCategoryAdmin)
+    list_display = ('name',)
+    search_fields = ('name',)
+
+
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'author', 'created_on', 'updated_on')
+    list_filter = ('category', 'created_on', 'updated_on')
+    search_fields = ('title', 'entry', 'author__display_name')
+    date_hierarchy = 'created_on'
+    ordering = ('-created_on',)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('entry_preview', 'author', 'article', 'created_on')
+    list_filter = ('created_on',)
+    search_fields = ('entry', 'author__display_name', 'article__title')
+    ordering = ('-created_on',)
+
+    def entry_preview(self, obj):
+        return obj.entry[:50] + ('...' if len(obj.entry) > 50 else '')
+    entry_preview.short_description = 'Comment'
