@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Job Details
+{% endblock %}
+
+{% block content %}
+    <h2>Job Details</h2>
+    <h3>{{ job.role }}</h3>
+    <p><strong>Manpower Required:</strong> {{ job.manpower_required }}</p>
+    <p><strong>Status:</strong> {{ job.status }}</p>
+
+    <h4>Applicants:</h4>
+    <ul>
+        {% for application in job_applications %}
+            <li>
+                {{ application.applicant.user }} - {{ application.status }}
+                
+                {% if application.status == 'Pending' %}
+                    <form method="post" action="{% url 'commissions:commission_jobview' job.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="application_id" value="{{ application.id }}">
+                        <button type="submit" name="action" value="accept">Accept</button>
+                        <button type="submit" name="action" value="reject">Reject</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
