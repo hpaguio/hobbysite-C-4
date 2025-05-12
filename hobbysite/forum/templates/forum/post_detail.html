@@ -1,34 +1,81 @@
-{% extends "forum/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Thread - {{ post.title }}{% endblock %}
 
 {% block content %}
-    <h2>{{ post.title }}</h2>
+  <h2>{{ post.title }}</h2>
 
-    {% if post.category %}
-        <p><strong>Category:</strong> {{ post.category.name }}</p>
+  {% if post.category %}
+    <p><strong>Category:</strong> {{ post.category.name }}</p>
+  {% endif %}
+
+  <p>{{ post.entry }}</p>
+
+  {% if post.image %}
+    <div>
+      <img src="{{ post.image.url }}" alt="Thread image" style="max-width: 100%; height: auto;">
+    </div>
+  {% endif %}
+
+  <p><small>🕒 Created: {{ post.created_on|date:"F d, Y H:i" }}</small></p>
+  <p><small>🔁 Updated: {{ post.updated_on|date:"F d, Y H:i" }}</small></p>
+
+  {% if user == post.author.user %}
+    <p><a href="{% url 'forum:thread-edit' post.pk %}">Edit Thread</a></p>
+  {% endif %}
+
+  <hr>
+
+  <div class="thread-navigation">
+    {% if previous_post %}
+      <a href="{% url 'forum:thread-detail' previous_post.pk %}">← Previous Thread</a>
     {% endif %}
+    {% if previous_post and next_post %} | {% endif %}
+    {% if next_post %}
+      <a href="{% url 'forum:thread-detail' next_post.pk %}">Next Thread →</a>
+    {% endif %}
+  </div>
 
-    <p>{{ post.entry }}</p>
+  <p><a href="{% url 'forum:thread-list' %}">← Back to Threads</a></p>
 
-    <p><small>Created on: {{ post.created_on }}</small></p>
-    <p><small>Last updated: {{ post.updated_on }}</small></p>
+  <hr>
 
+  <h3>💬 Comments</h3>
+
+  {% if comments %}
+    <ul>
+      {% for comment in comments %}
+        <li>
+          <strong>{{ comment.author.display_name }}</strong>
+          <small>on {{ comment.created_on|date:"M d, Y H:i" }}</small>
+          <p>{{ comment.entry }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No comments yet. Be the first to join the conversation!</p>
+  {% endif %}
+
+  {% if user.is_authenticated %}
     <hr>
-    <p>
-        {% if previous_post %}
-            <a href="{% url 'forum:thread-detail' previous_post.pk %}">← Previous Thread</a>
+    <h4>Add a Comment</h4>
+    <form method="post">
+      {% csrf_token %}
+      {% if comment_form.errors %}
+        <div style="color: red;">
+          Please fix the errors below.
+        </div>
+      {% endif %}
+      <div>
+        {{ comment_form.entry.label_tag }}
+        {{ comment_form.entry }}
+        {% if comment_form.entry.errors %}
+          <div style="color: red;">{{ comment_form.entry.errors }}</div>
         {% endif %}
-    
-        {% if previous_post and next_post %}
-            |
-        {% endif %}
-    
-        {% if next_post %}
-            <a href="{% url 'forum:thread-detail' next_post.pk %}">Next Thread →</a>
-        {% endif %}
-    </p>
-    
-    <p><a href="{% url 'forum:thread-list' %}">← Back to Threads</a></p>
-    
+      </div>
+      <button type="submit">Post Comment</button>
+    </form>
+  {% else %}
+    <p><a href="{% url 'login' %}">Login</a> to add a comment.</p>
+  {% endif %}
 {% endblock %}
