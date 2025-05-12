@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+Merchstore
+{% endblock %}
+
+{% block content %}
+<h2>Product Detail</h2>
+
+<h3>{{ product.name }}</h3>
+<p><b>{{ product.product_category.name }}</b></p>
+<p>Stock: {{ product.stock }}</p>
+<p>{{ product.description }}</p>
+
+{% if user.is_authenticated %}
+	{% if user != product.owner.user %}
+		<form method="post">
+			{% csrf_token %}
+			{% if transaction_form.errors %}
+				<div style="color:red">
+					Please fix the errors below.
+				</div>
+			{% endif %}
+			<div>
+				{{ transaction_form.amount.label_tag }}
+				{{ transaction_form.amount }}
+				{% if transaction_form.amount.errors %}
+					<div style="color:red">{{ transaction_form.amount.errors }}</div>
+				{% endif %}
+			</div>
+			{% if product.stock <= 0 %}
+				<button type="submit" disabled>Buy</button>
+			{% else %}
+				<button type="submit">Buy</button>
+			{% endif %}	
+		</form>
+	{% else %}
+		<p><a href="{% url 'merchstore:product-edit' product.pk %}">Edit Product</a></p>
+	{% endif %}
+{% else %}
+<p><a href="{% url 'login' %}">Login</a> to buy this product</p>
+{% endif %}
+
+{% endblock %}

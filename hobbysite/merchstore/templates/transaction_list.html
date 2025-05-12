@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Transaction View
+{% endblock %}
+
+{% block content %}
+
+	<h2>Transaction View</h2>
+	<ul class="cart-list">
+		{% for transaction in transactions %}
+			<li class="product-item">
+				<h4>
+					<a href="{% url 'merchstore:product-detail' transaction.product.pk}">
+						{{ transaction.product.name }}
+					</a>
+				</h4>
+				<p><b>{{ transaction.product.product_type }}</b></p>
+				<p>Description: {{ transaction.product.description }}</p>
+				<p>Price: {{ transaction.product.price }}</p>
+				<p>Buyer: {{ transaction.buyer }}</p>
+				<p>Amount: {{ transaction.amount }}</p>
+				<p>Status: {{ transaction.status }}</p>
+			</li>
+		{% endfor %}
+	</ul>
+
+{% endblock %}
