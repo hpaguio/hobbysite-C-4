@@ -20,14 +20,14 @@ class Article(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="articles"
+        related_name="blog_articles"
     )
     author = models.ForeignKey(
         Profile,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="articles"
+        related_name="blog_articles"
     )
     entry = models.TextField()
     image = models.ImageField(upload_to='article_images/', blank=True, null=True)
