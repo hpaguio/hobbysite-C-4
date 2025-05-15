@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Wiki Articles{% endblock %}
+
+{% block content %}
+  <h2>Wiki Articles</h2>
+
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'wiki:article-create' %}" class="btn btn-primary">Create New Article</a></p>
+  {% endif %}
+
+  {% if articles %}
+    <ul class="article-list">
+      {% for article in articles %}
+        <li class="article-item">
+          <h3>
+            <a href="{% url 'wiki:article-detail' article.pk %}">
+              {{ article.title }}
+            </a>
+          </h3>
+          {% if article.category %}
+            <small>{{ article.category.name }}</small><br>
+          {% endif %}
+          <small>🕒 {{ article.created_on|date:"M d, Y H:i" }}</small>
+          <p>{{ article.entry|truncatechars:100 }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="pagination">
+      {% if articles.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ articles.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      <span>Page {{ articles.number }} of {{ articles.paginator.num_pages }}</span>
+
+      {% if articles.has_next %}
+        <a href="?page={{ articles.next_page_number }}">Next</a>
+        <a href="?page={{ articles.paginator.num_pages }}">Last</a>
+      {% endif %}
+    </div>
+
+  {% else %}
+    <p>No Articles yet. Be the first to start a discussion!</p>
+  {% endif %}
+{% endblock %}

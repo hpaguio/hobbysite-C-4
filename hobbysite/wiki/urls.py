@@ -1,11 +1,19 @@
 from django.urls import path
-from .views import articles_list, articles_detail
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from .views import (
+    ArticleListView,
+    ArticleDetailView,
+    ArticleCreateView,
+    ArticleUpdateView,
+)
 
 app_name = "wiki"
 
-
 urlpatterns = [
-    path("", articles_list, name="wiki_home"),
-    path('articles/', articles_list, name="article_list"),
-    path('article/<int:article_id>/', articles_detail, name="article_detail"),
+    path("", lambda request: HttpResponseRedirect(reverse_lazy("wiki:article-list"))),
+    path("articles/", ArticleListView.as_view(), name="article-list"),
+    path("article/add/", ArticleCreateView.as_view(), name="article-create"),
+    path("article/<int:pk>/", ArticleDetailView.as_view(), name="article-detail"),
+    path("article/<int:pk>/edit/", ArticleUpdateView.as_view(), name="article-edit"),
 ]
